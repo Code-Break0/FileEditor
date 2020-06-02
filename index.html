@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>File Editor</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="ace/ace.js"></script>
+  <script src="ace/ext-modelist.js"></script>
+  <script src="script.js"></script>
+</head>
+<body onload="load()">
+  <div id="sidebar">
+    <img id="save" onclick="save()" src="res/save.svg"/>
+    <h1 id="file">Editor</h1>
+    <div id="files"></div>
+  </div>
+  <div id="editor"></div>
+</body>
+</html>
