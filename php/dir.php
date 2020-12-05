@@ -1,5 +1,5 @@
 <?php
-  $dir = $_POST['folder'];
+  $dir = str_replace('\\', '/', realpath($_POST['folder']));
 
   $files = scandir($dir);
   foreach($files as $file) {
