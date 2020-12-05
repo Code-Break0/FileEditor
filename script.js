@@ -3,15 +3,15 @@ var keys = {};
 
 function load() {
   editor = ace.edit("editor");
-  openFolder("C:/wamp64/www/Code Break/File Editor");
+  openFolder("..");
   window.addEventListener("keydown", function(event) {
-    keys[event.keyCode] = true;
-    if(event.ctrlKey && keys[83]) {
+    keys[event.code] = true;
+    if((event.ctrlKey || event.metaKey) && keys["KeyS"]) {
       event.preventDefault();
       save();
     }
   });
-  window.addEventListener("keyup", function(event) {delete keys[event.keyCode];});
+  window.addEventListener("keyup", function(event) {delete keys[event.code];});
   document.getElementById("editor").addEventListener("keyup", checkSave);
 }
 function post(url,data,callback) {
@@ -75,4 +75,18 @@ function checkSave() {
   else {
     document.getElementById("save").style.display = "none";
   }
+}
+
+
+function newFile() {
+  var filename = prompt("Enter the file/folder name");
+
+  post("newFile.php", {filename, dir}, function(data) {
+    if(data == true) {
+      openFolder(dir);
+    }
+    else {
+      console.log(data);
+    }
+  })
 }
