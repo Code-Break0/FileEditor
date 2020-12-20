@@ -1,4 +1,4 @@
-var editor, mode, dir, doc, saved;
+var editor, mode, dir, doc, saved, selectedFile;
 var keys = {};
 
 function load() {
@@ -81,12 +81,57 @@ function checkSave() {
 function newFile() {
   var filename = prompt("Enter the file/folder name");
 
-  post("newFile.php", {filename, dir}, function(data) {
-    if(data == true) {
-      openFolder(dir);
-    }
-    else {
-      console.log(data);
-    }
-  })
+  if(filename) {
+    post("newFile.php", {filename, dir}, function(data) {
+      if(data == true) {
+        openFolder(dir);
+      }
+      else {
+        console.log(data);
+      }
+      closeMenu();
+    });
+  }
+}
+function delFile() {
+  if(selectedFile) {
+    post("delFile.php", {path:selectedFile}, function(data) {
+      if(data == true) {
+        openFolder(dir);
+      }
+      else {
+        console.log(data);
+      }
+      closeMenu();
+    });
+  }
+}
+
+
+
+
+
+function deselectAll() {
+  document.querySelectorAll('.selected').forEach(function(e) {
+    e.classList.remove('selected');
+  });
+}
+function closeMenu() {
+  document.getElementById('menu').className = '';
+  deselectAll();
+  selectedFile = null;
+}
+
+function fileMouseDown(event, file) {
+  if(file && event.button === 2) {
+    deselectAll();
+    file.classList.add('selected');
+    document.getElementById('menu').style.top = event.clientY + "px";
+    document.getElementById('menu').style.left = event.clientX + "px";
+    document.getElementById('menu').className = 'show';
+
+    selectedFile = file.dataset.path;
+
+    event.stopPropagation();
+  }
 }
